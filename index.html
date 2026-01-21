@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JUAN JOSE ZAPATA | Developer & Designer</title>
+    <meta name="description" content="Portfolio de  Juan José Zapata - Desarrollador Web y Diseñador de 16 años de Colombia">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --cyan: #06b6d4;
+            --lime: #84cc16;
+            --bg: #000;
+            --bg-2: #0f172a;
+            --bg-3: #1e293b;
+            --text: #f8fafc;
+            --text-2: #94a3b8;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+        .gradient-text { background: linear-gradient(135deg, var(--cyan), var(--lime)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        
+        /* Navbar */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1rem 0; transition: all 0.3s; }
+        nav.scrolled { background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(6, 182, 212, 0.1); }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+        .nav-links a { color: var(--text-2); text-decoration: none; transition: 0.3s; font-weight: 500; }
+        .nav-links a:hover { color: var(--cyan); }
+        #langBtn { padding: 0.5rem 1rem; background: linear-gradient(135deg, var(--cyan), var(--lime)); color: #000; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer; }
+        .menu-toggle { display: none; background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; }
+        
+        /* Hero */
+        .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; padding: 6rem 0; }
+        .hero-bg { position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.1), transparent 50%), radial-gradient(circle at 80% 20%, rgba(132, 204, 22, 0.1), transparent 50%); }
+        .particle { position: absolute; width: 4px; height: 4px; background: var(--cyan); border-radius: 50%; opacity: 0.3; animation: float linear infinite; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        .hero-content { position: relative; z-index: 10; text-align: center; max-width: 900px; }
+        .hero-badge { display: inline-block; padding: 0.5rem 1.5rem; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 2rem; color: var(--cyan); font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; margin-bottom: 1.5rem; }
+        .hero h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .typing-container { font-size: clamp(1.5rem, 4vw, 2.5rem); font-family: 'JetBrains Mono', monospace; color: var(--text-2); margin-bottom: 1.5rem; min-height: 3rem; }
+        .typing-text { color: var(--cyan); }
+        .cursor { display: inline-block; width: 2px; height: 1.5rem; background: var(--cyan); margin-left: 0.25rem; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+        .hero p { font-size: 1.125rem; color: var(--text-2); max-width: 600px; margin: 0 auto 2rem; }
+        .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+        .btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.875rem 2rem; background: linear-gradient(135deg, var(--cyan), var(--lime)); color: #000; font-weight: 700; border: none; border-radius: 0.5rem; cursor: pointer; transition: 0.3s; text-decoration: none; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(6, 182, 212, 0.4); }
+        .btn-secondary { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: var(--bg-3); color: var(--text); border: 1px solid #334155; border-radius: 0.5rem; cursor: pointer; transition: 0.3s; text-decoration: none; }
+        .btn-secondary:hover { background: var(--cyan); border-color: var(--cyan); color: #000; }
+        .social-links { display: flex; gap: 0.75rem; justify-content: center; margin-top: 2rem; }
+        .social-link { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: var(--bg-3); border-radius: 0.5rem; color: var(--text); transition: 0.3s; text-decoration: none; font-size: 1.25rem; }
+        .social-link:hover { background: var(--cyan); color: #000; transform: translateY(-3px); }
+        
+        /* Sections */
+        section { padding: 6rem 0; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-header h2 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; margin-bottom: 1rem; }
+        .section-header p { font-size: 1.125rem; color: var(--text-2); }
+        
+        /* About */
+        .about-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; align-items: center; }
+        .about-card { background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(30, 41, 59, 0.5)); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 1rem; padding: 2rem; }
+        .about-card p { color: var(--text-2); margin-bottom: 1rem; }
+        .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1.5rem; }
+        .stat-card { background: var(--bg-2); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 0.75rem; padding: 1.5rem; text-align: center; }
+        .stat-card .number { font-size: 2rem; font-weight: 800; color: var(--cyan); display: block; }
+        .stat-card .label { font-size: 0.875rem; color: var(--text-2); margin-top: 0.5rem; display: block; }
+        .terminal { background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(132, 204, 22, 0.1)); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 1rem; padding: 2rem; }
+        .terminal-window { background: var(--bg-2); border-radius: 0.75rem; padding: 1.5rem; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; }
+        .terminal-header { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .terminal-dot.red { background: #ef4444; }
+        .terminal-dot.yellow { background: #eab308; }
+        .terminal-dot.green { background: #22c55e; }
+        .terminal-code { color: var(--text-2); line-height: 1.8; }
+        .keyword { color: var(--cyan); }
+        .property { color: var(--lime); }
+        .string { color: #fbbf24; }
+        
+        /* Projects */
+        .projects { background: linear-gradient(180deg, transparent, rgba(15, 23, 42, 0.5)); }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .project-card { background: var(--bg-2); border: 1px solid #334155; border-radius: 1rem; overflow: hidden; transition: 0.3s; }
+        .project-card:hover { border-color: var(--cyan); box-shadow: 0 10px 40px rgba(6, 182, 212, 0.2); transform: translateY(-5px); }
+        .project-img { position: relative; height: 200px; overflow: hidden; }
+        .project-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .project-card:hover .project-img img { transform: scale(1.1); }
+        .project-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent, rgba(15, 23, 42, 0.9)); }
+        .project-content { padding: 1.5rem; }
+        .project-content h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.75rem; transition: 0.3s; }
+        .project-card:hover h3 { color: var(--cyan); }
+        .project-content p { color: var(--text-2); margin-bottom: 1rem; }
+        .tech-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+        .tech-tag { padding: 0.25rem 0.75rem; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 1rem; color: var(--cyan); font-size: 0.75rem; }
+        .project-links { display: flex; gap: 0.75rem; }
+        .project-links a { flex: 1; padding: 0.75rem; text-align: center; border-radius: 0.5rem; text-decoration: none; font-weight: 600; font-size: 0.875rem; transition: 0.3s; }
+        .github-link { background: var(--bg-3); color: var(--text); border: 1px solid #334155; }
+        .github-link:hover { background: var(--cyan); color: #000; }
+        .demo-link { background: linear-gradient(135deg, var(--cyan), var(--lime)); color: #000; }
+        .demo-link:hover { box-shadow: 0 4px 15px rgba(6, 182, 212, 0.5); }
+        
+        /* Skills */
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .skill-card { background: linear-gradient(135deg, var(--bg-2), var(--bg)); border: 1px solid #334155; border-radius: 0.75rem; padding: 1.5rem; transition: 0.3s; }
+        .skill-card:hover { border-color: var(--cyan); }
+        .skill-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+        .skill-info { display: flex; align-items: center; gap: 0.75rem; }
+        .skill-icon { font-size: 2rem; }
+        .skill-name { font-weight: 600; font-size: 1.125rem; }
+        .skill-percent { color: var(--cyan); font-weight: 700; }
+        .skill-bar-bg { width: 100%; height: 8px; background: var(--bg-3); border-radius: 1rem; overflow: hidden; }
+        .skill-bar { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--lime)); border-radius: 1rem; transition: width 1s ease; }
+        
+        /* Contact */
+        .contact { background: linear-gradient(180deg, rgba(15, 23, 42, 0.5), transparent); }
+        .contact-card { max-width: 800px; margin: 0 auto; background: linear-gradient(135deg, var(--bg-2), var(--bg)); border: 1px solid rgba(6, 182, 212, 0.3); border-radius: 1rem; padding: 2.5rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; color: var(--text); font-weight: 600; margin-bottom: 0.5rem; }
+        .form-group input, .form-group textarea { width: 100%; padding: 0.875rem 1rem; background: var(--bg-2); border: 1px solid #334155; border-radius: 0.5rem; color: var(--text); font-family: inherit; font-size: 1rem; transition: 0.3s; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1); }
+        .form-group textarea { resize: vertical; min-height: 150px; }
+        .submit-btn { width: 100%; padding: 1rem 2rem; background: linear-gradient(135deg, var(--cyan), var(--lime)); color: #000; font-weight: 700; font-size: 1rem; border: none; border-radius: 0.5rem; cursor: pointer; transition: 0.3s; }
+        .submit-btn:hover { box-shadow: 0 10px 30px rgba(6, 182, 212, 0.4); transform: translateY(-2px); }
+        .form-msg { padding: 1rem; border-radius: 0.5rem; margin-top: 1rem; display: none; }
+        .form-msg.success { background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); color: #22c55e; }
+        .form-msg.error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; }
+        .contact-divider { margin: 2rem 0; padding-top: 2rem; border-top: 1px solid #334155; text-align: center; }
+        .contact-divider p { color: var(--text-2); margin-bottom: 1rem; }
+        
+        /* Footer */
+        footer { padding: 2rem 0; border-top: 1px solid #334155; text-align: center; }
+        footer p { color: var(--text-2); margin-bottom: 0.5rem; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links { position: fixed; top: 0; left: -100%; width: 80%; height: 100vh; background: rgba(15, 23, 42, 0.98); backdrop-filter: blur(10px); flex-direction: column; justify-content: center; gap: 2rem; transition: 0.3s; }
+            .nav-links.active { left: 0; }
+            .menu-toggle { display: block; }
+            .stats { grid-template-columns: 1fr; }
+        }
+        
+        .fade-in { opacity: 0; transform: translateY(30px); transition: 0.6s; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav id="navbar">
+        <div class="container">
+            <div class="logo gradient-text">&lt;JZ/ &gt;</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#sobre">Sobre Mí</a></li>
+                <li><a href="#proyectos">Proyectos</a></li>
+                <li><a href="#habilidades">Habilidades</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+                <li><button id="langBtn">EN</button></li>
+            </ul>
+            <button class="menu-toggle" id="menuToggle">☰</button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="inicio">
+        <div class="hero-bg"></div>
+        <div id="particles"></div>
+        <div class="hero-content container">
+            <div class="hero-badge" data-es="¡Hola! Soy" data-en="Hi! I'm">¡Hola! Soy</div>
+            <h1 class="gradient-text">Juan José Zapata</h1>
+            <div class="typing-container">
+                <span>&gt;</span>
+                <span class="typing-text" id="typingText"></span>
+                <span class="cursor">|</span>
+            </div>
+            <p data-es="Estudiante y creador de 16 años apasionado por la programación, el desarrollo web y la tecnología. Creando experiencias digitales con código limpio y diseño moderno." data-en="16-year-old student and creator passionate about programming, web development and technology. Creating digital experiences with clean code and modern design.">
+                Estudiante y creador de 16 años apasionado por la programación, el desarrollo web y la tecnología. Creando experiencias digitales con código limpio y diseño moderno.
+            </p>
+            <div class="hero-btns">
+                <a href="#proyectos" class="btn-primary">
+                    <span data-es="Ver Proyectos" data-en="View Projects">Ver Proyectos</span>
+                    <i class="fas fa-arrow-down"></i>
+                </a>
+                <a href="#contacto" class="btn-secondary">
+                    <span data-es="Contacto" data-en="Contact">Contacto</span>
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+            <div class="social-links">
+                <!-- ⚠️ EDITA ESTAS URLs -->
+                <a href="https://github.com/zapatacode?tab=overview&from=2026-01-01&to=2026-01-16" target="_blank" class="social-link"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/juan-jose-zapata-b776b53a6/" target="_blank" class="social-link"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.instagram.com/zapata.code?igsh=MWJucTVzbjQ3a3Q5OQ==" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
+                <a href="https://twitter.com/tu-usuario" target="_blank" class="social-link"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SOBRE MÍ -->
+    <section id="sobre" class="fade-in">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="gradient-text" data-es="Sobre Mí" data-en="About Me">Sobre Mí</h2>
+                <p data-es="Estudiante & Desarrollador" data-en="Student & Developer">Estudiante & Desarrollador</p>
+            </div>
+            <div class="about-grid">
+                <div class="about-content">
+                    <div class="about-card">
+                        <p data-es="Tengo 16 años y soy de Colombia. Me apasiona crear experiencias digitales que combinan código limpio con diseño moderno." data-en="I'm 15 years old from Colombia. I'm passionate about creating digital experiences that combine clean code with modern design.">
+                            Tengo 16 años y soy de Colombia. Me apasiona crear experiencias digitales que combinan código limpio con diseño moderno.
+                        </p>
+                        <p data-es="Estoy constantemente aprendiendo nuevas tecnologías y mejorando mis habilidades en desarrollo web, diseño UI/UX y programación." data-en="I'm constantly learning new technologies and improving my skills in web development, UI/UX design and programming.">
+                            Estoy constantemente aprendiendo nuevas tecnologías y mejorando mis habilidades en desarrollo web, diseño UI/UX y programación.
+                        </p>
+                        <p data-es="Mi objetivo es construir proyectos que no solo funcionen bien, sino que también tengan personalidad y concepto único." data-en="My goal is to build projects that not only work well, but also have personality and unique concept.">
+                            Mi objetivo es construir proyectos que no solo funcionen bien, sino que también tengan personalidad y concepto único.
+                        </p>
+                    </div>
+                    <div class="stats">
+                        <div class="stat-card">
+                            <span class="number">16</span>
+                            <span class="label" data-es="Años" data-en="Years">Años</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="number">4+</span>
+                            <span class="label" data-es="Proyectos" data-en="Projects">Proyectos</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="terminal">
+                    <div class="terminal-window">
+                        <div class="terminal-header">
+                            <div class="terminal-dot red"></div>
+                            <div class="terminal-dot yellow"></div>
+                            <div class="terminal-dot green"></div>
+                        </div>
+                        <div class="terminal-code">
+                            <div><span class="keyword">const</span> developer = {</div>
+                            <div>&nbsp;&nbsp;<span class="property">name:</span> <span class="string">"JUAN JOSE ZAPATA"</span>,</div>
+                            <div>&nbsp;&nbsp;<span class="property">age:</span> 16,</div>
+                            <div>&nbsp;&nbsp;<span class="property">location:</span> <span class="string">"Colombia 🇨🇴"</span>,</div>
+                            <div>&nbsp;&nbsp;<span class="property">passion:</span> <span class="string">"Code & Design"</span>,</div>
+                            <div>&nbsp;&nbsp;<span class="property">motto:</span> <span class="string">"Next Level"</span></div>
+                            <div>}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROYECTOS -->
+    <section id="proyectos" class="projects fade-in">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="gradient-text" data-es="Mis Proyectos" data-en="My Projects">Mis Proyectos</h2>
+                <p data-es="Trabajos recientes que demuestran mis habilidades" data-en="Recent work showcasing my skills">Trabajos recientes que demuestran mis habilidades</p>
+            </div>
+            <div class="projects-grid">
+                <!-- Proyecto 1 -->
+                <div class="project-card">
+                    <div class="project-img">
+                        <img src="https://images.unsplash.com/photo-1557821552-17105176677c?w=800&h=600&fit=crop" alt="E-Commerce">
+                        <div class="project-overlay"></div>
+                    </div>
+                    <div class="project-content">
+                        <h3>E-Commerce Moderno</h3>
+                        <p data-es="Tienda online con carrito de compras y pasarela de pago" data-en="Online store with shopping cart and payment gateway">Tienda online con carrito de compras y pasarela de pago</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">React</span>
+                            <span class="tech-tag">Node.js</span>
+                            <span class="tech-tag">MongoDB</span>
+                        </div>
+                        <div class="project-links">
+                            <!-- ⚠️ EDITA ESTAS URLs -->
+                            <a href="https://github.com/zapatacode?tab=overview&from=2026-01-01&to=2026-01-16" target="_blank" class="github-link">
+                                <i class="fab fa-github"></i> <span data-es="Código" data-en="Code">Código</span>
+                            </a>
+                            <a href="https://tu-demo1.vercel.app" target="_blank" class="demo-link">
+                                <i class="fas fa-external-link-alt"></i> <span data-es="Demo" data-en="Demo">Demo</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Proyecto 2 -->
+                <div class="project-card">
+                    <div class="project-img">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop" alt="Dashboard">
+                        <div class="project-overlay"></div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Dashboard Analytics</h3>
+                        <p data-es="Panel de control con gráficos interactivos y métricas en tiempo real" data-en="Dashboard with interactive charts and real-time metrics">Panel de control con gráficos interactivos y métricas en tiempo real</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">React</span>
+                            <span class="tech-tag">Chart.js</span>
+                            <span class="tech-tag">TailwindCSS</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/zapatacode?tab=overview&from=2026-01-01&to=2026-01-16" target="_blank" class="github-link">
+                                <i class="fab fa-github"></i> <span data-es="Código" data-en="Code">Código</span>
+                            </a>
+                            <a href="https://tu-demo2.vercel.app" target="_blank" class="demo-link">
+                                <i class="fas fa-external-link-alt"></i> <span data-es="Demo" data-en="Demo">Demo</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Proyecto 3 -->
+                <div class="project-card">
+                    <div class="project-img">
+                        <img src="https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=800&h=600&fit=crop" alt="Task App">
+                        <div class="project-overlay"></div>
+                    </div>
+                    <div class="project-content">
+                        <h3>App de Tareas</h3>
+                        <p data-es="Gestor de tareas con drag & drop y sincronización en la nube" data-en="Task manager with drag & drop and cloud sync">Gestor de tareas con drag & drop y sincronización en la nube</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">TypeScript</span>
+                            <span class="tech-tag">Firebase</span>
+                            <span class="tech-tag">React</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/zapatacode?tab=overview&from=2026-01-01&to=2026-01-16" target="_blank" class="github-link">
+                                <i class="fab fa-github"></i> <span data-es="Código" data-en="Code">Código</span>
+                            </a>
+                            <a href="https://tu-demo3.vercel.app" target="_blank" class="demo-link">
+                                <i class="fas fa-external-link-alt"></i> <span data-es="Demo" data-en="Demo">Demo</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Proyecto 4 -->
+                <div class="project-card">
+                    <div class="project-img">
+                        <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=600&fit=crop" alt="Portfolio">
+                        <div class="project-overlay"></div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Portfolio Creativo</h3>
+                        <p data-es="Sitio web con animaciones 3D y efectos parallax" data-en="Website with 3D animations and parallax effects">Sitio web con animaciones 3D y efectos parallax</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Three.js</span>
+                            <span class="tech-tag">GSAP</span>
+                            <span class="tech-tag">Next.js</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/zapatacode?tab=overview&from=2026-01-01&to=2026-01-16" target="_blank" class="github-link">
+                                <i class="fab fa-github"></i> <span data-es="Código" data-en="Code">Código</span>
+                            </a>
+                            <a href="https://tu-demo4.vercel.app" target="_blank" class="demo-link">
+                                <i class="fas fa-external-link-alt"></i> <span data-es="Demo" data-en="Demo">Demo</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HABILIDADES -->
+    <section id="habilidades" class="fade-in">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="gradient-text" data-es="Habilidades" data-en="Skills">Habilidades</h2>
+                <p data-es="Tecnologías y herramientas que domino" data-en="Technologies and tools I work with">Tecnologías y herramientas que domino</p>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <div class="skill-info">
+                            <span class="skill-icon">🌐</span>
+                            <span class="skill-name">HTML5</span>
+                        </div>
+                        <span class="skill-percent">90%</span>
+                    </div>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar" style="width: 90%;"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <div class="skill-info">
+                            <span class="skill-icon">🎨</span>
+                            <span class="skill-name">CSS3</span>
+                        </div>
+                        <span class="skill-percent">85%</span>
+                    </div>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar" style="width: 85%;"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <div class="skill-info">
+                            <span class="skill-icon">⚡</span>
+                            <span class="skill-name">JavaScript</span>
+                        </div>
+                        <span class="skill-percent">80%</span>
+                    </div>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar" style="width: 80%;"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <div class="skill-info">
+                            <span class="skill-icon">⚛️</span>
+                            <span class="skill-name">React</span>
+                        </div>
+                        <span class="skill-percent">75%</span>
+                    </div>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar" style="width: 75%;"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <div class="skill-info">
+                            <span class="skill-icon">🟢</span>
+                            <span class="skill-name">Node.js</span>
+                        </div>
+                        <span class="skill-percent">70%</span>
+                    </div>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar" style="width: 70%;"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <div class="skill-info">
+                            <span class="skill-icon">🔧</span>
+                            <span class="skill-name">Git</span>
+                        </div>
+                        <span class="skill-percent">85%</span>
+                    </div>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar" style="width: 85%;"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <div class="skill-info">
+                            <span class="skill-icon">✨</span>
+                            <span class="skill-name">Diseño UI/UX</span>
+                        </div>
+                        <span class="skill-percent">80%</span>
+                    </div>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar" style="width: 80%;"></div>
+                    </div>
+                </div>
+                
+                <div class="skill-card">
+                    <div class="skill-header">
+                        <div class="skill-info">
+                            <span class="skill-icon">🎯</span>
+                            <span class="skill-name">Figma</span>
+                        </div>
+                        <span class="skill-percent">75%</span>
+                    </div>
+                    <div class="skill-bar-bg">
+                        <div class="skill-bar" style="width: 75%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section id="contacto" class="contact fade-in">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="gradient-text" data-es="Contacto" data-en="Contact">Contacto</h2>
+                <p data-es="¿Tienes un proyecto en mente? ¡Hablemos!" data-en="Have a project in mind? Let's talk!">¿Tienes un proyecto en mente? ¡Hablemos!</p>
+            </div>
+            <div class="contact-card">
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label data-es="Nombre" data-en="Name">Nombre</label>
+                        <input type="text" name="nombre" required placeholder="Tu nombre">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" required placeholder="tu-email@gmail.com">
+                    </div>
+                    <div class="form-group">
+                        <label data-es="Mensaje" data-en="Message">Mensaje</label>
+                        <textarea name="mensaje" required placeholder="Cuéntame sobre tu proyecto..." data-es-placeholder="Cuéntame sobre tu proyecto..." data-en-placeholder="Tell me about your project..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i>
+                        <span data-es="Enviar Mensaje" data-en="Send Message">Enviar Mensaje</span>
+                    </button>
+                    <div class="form-msg" id="formMsg"></div>
+                </form>
+                
+                <div class="contact-divider">
+                    <p data-es="O contáctame directamente:" data-en="Or contact me directly:">O contáctame directamente:</p>
+                    <div class="social-links">
+                        <!-- ⚠️ EDITA ESTE EMAIL -->
+                        <a href="mailto:juanjose.zapata.dev@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
+                        <a href="https://github.com/zapatacode?tab=overview&from=2026-01-01&to=2026-01-16" target="_blank" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/juan-jose-zapata-b776b53a6/" target="_blank" class="social-link"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>© 2026 JUAN JOSE ZAPATA. <span data-es="" data-en="All rights reserved.">Todos los derechos reservados.</span></p>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // CONFIGURACIÓN - EDITA AQUÍ
+        // ============================================
+        const CONFIG = {
+            email: 'juanjose.zapata.devl@gmail.com', // ⚠️ EDITA ESTO
+            typingRoles: ['Developer', 'Designer', 'Creator', 'Student'],
+            particleCount: 20
+        };
+
+        // ============================================
+        // NAVBAR SCROLL
+        // ============================================
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // ============================================
+        // MENÚ MÓVIL
+        // ============================================
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuToggle.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+        });
+        
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuToggle.textContent = '☰';
+            });
+        });
+
+        // ============================================
+        // EFECTO TYPING
+        // ============================================
+        const typingText = document.getElementById('typingText');
+        let roleIndex = 0;
+        let charIndex = 0;
+        
+        function typeEffect() {
+            const currentRole = CONFIG.typingRoles[roleIndex];
+            
+            if (charIndex < currentRole.length) {
+                typingText.textContent = currentRole.slice(0, charIndex + 1);
+                charIndex++;
+                setTimeout(typeEffect, 100);
+            } else {
+                setTimeout(() => {
+                    roleIndex = (roleIndex + 1) % CONFIG.typingRoles.length;
+                    charIndex = 0;
+                    typeEffect();
+                }, 2000);
+            }
+        }
+        
+        typeEffect();
+
+        // ============================================
+        // PARTÍCULAS
+        // ============================================
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < CONFIG.particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDuration = (5 + Math.random() * 10) + 's';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // ============================================
+        // ANIMACIÓN SCROLL
+        // ============================================
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        fadeElements.forEach(el => observer.observe(el));
+
+        // ============================================
+        // CAMBIO DE IDIOMA
+        // ============================================
+        let currentLang = 'es';
+        const langBtn = document.getElementById('langBtn');
+        
+        langBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'es' ? 'en' : 'es';
+            langBtn.textContent = currentLang === 'es' ? 'EN' : 'ES';
+            
+            document.querySelectorAll('[data-es]').forEach(el => {
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    el.placeholder = el.getAttribute(`data-${currentLang}-placeholder`);
+                } else {
+                    el.textContent = el.getAttribute(`data-${currentLang}`);
+                }
+            });
+        });
+
+        // ============================================
+        // FORMULARIO DE CONTACTO
+        // ============================================
+        const contactForm = document.getElementById('contactForm');
+        const formMsg = document.getElementById('formMsg');
+        
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(contactForm);
+            const data = {
+                nombre: formData.get('nombre'),
+                email: formData.get('email'),
+                mensaje: formData.get('mensaje')
+            };
+            
+            // Simulación de envío (AQUÍ INTEGRARÍAS EmailJS o tu backend)
+            try {
+                // Simular delay
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // Mostrar mensaje de éxito
+                formMsg.className = 'form-msg success';
+                formMsg.style.display = 'block';
+                formMsg.textContent = currentLang === 'es' 
+                    ? '¡Mensaje enviado! Te responderé pronto.' 
+                    : 'Message sent! I\'ll respond soon.';
+                
+                contactForm.reset();
+                
+                // Ocultar mensaje después de 5 segundos
+                setTimeout(() => {
+                    formMsg.style.display = 'none';
+                }, 5000);
+                
+                // PARA ENVÍO REAL, DESCOMENTAR ESTO Y CONFIGURAR EmailJS:
+                /*
+                emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+                    from_name: data.nombre,
+                    from_email: data.email,
+                    message: data.mensaje,
+                    to_email: CONFIG.email
+                }).then(() => {
+                    formMsg.className = 'form-msg success';
+                    formMsg.style.display = 'block';
+                    formMsg.textContent = '¡Mensaje enviado!';
+                    contactForm.reset();
+                });
+                */
+            } catch (error) {
+                formMsg.className = 'form-msg error';
+                formMsg.style.display = 'block';
+                formMsg.textContent = currentLang === 'es' 
+                    ? 'Error al enviar. Intenta de nuevo.' 
+                    : 'Error sending. Please try again.';
+            }
+        });
+
+        // ============================================
+        // SMOOTH SCROLL PARA NAVEGACIÓN
+        // ============================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
