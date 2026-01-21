@@ -126,6 +126,7 @@
         .form-group textarea { resize: vertical; min-height: 150px; }
         .submit-btn { width: 100%; padding: 1rem 2rem; background: linear-gradient(135deg, var(--cyan), var(--lime)); color: #000; font-weight: 700; font-size: 1rem; border: none; border-radius: 0.5rem; cursor: pointer; transition: 0.3s; }
         .submit-btn:hover { box-shadow: 0 10px 30px rgba(6, 182, 212, 0.4); transform: translateY(-2px); }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
         .form-msg { padding: 1rem; border-radius: 0.5rem; margin-top: 1rem; display: none; }
         .form-msg.success { background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.3); color: #22c55e; }
         .form-msg.error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; }
@@ -191,7 +192,6 @@
                 </a>
             </div>
             <div class="social-links">
-                <!-- ⚠️ EDITA ESTAS URLs -->
                 <a href="https://github.com/zapatacode?tab=overview&from=2026-01-01&to=2026-01-16" target="_blank" class="social-link"><i class="fab fa-github"></i></a>
                 <a href="https://www.linkedin.com/in/juan-jose-zapata-b776b53a6/" target="_blank" class="social-link"><i class="fab fa-linkedin"></i></a>
                 <a href="https://www.instagram.com/zapata.code?igsh=MWJucTVzbjQ3a3Q5OQ==" target="_blank" class="social-link"><i class="fab fa-instagram"></i></a>
@@ -276,7 +276,6 @@
                             <span class="tech-tag">MongoDB</span>
                         </div>
                         <div class="project-links">
-                            <!-- ⚠️ EDITA ESTAS URLs -->
                             <a href="https://github.com/zapatacode?tab=overview&from=2026-01-01&to=2026-01-16" target="_blank" class="github-link">
                                 <i class="fab fa-github"></i> <span data-es="Código" data-en="Code">Código</span>
                             </a>
@@ -511,7 +510,6 @@
                 <div class="contact-divider">
                     <p data-es="O contáctame directamente:" data-en="Or contact me directly:">O contáctame directamente:</p>
                     <div class="social-links">
-                        <!-- ⚠️ EDITA ESTE EMAIL -->
                         <a href="mailto:juanjose.zapata.dev@gmail.com" class="social-link"><i class="fas fa-envelope"></i></a>
                         <a href="https://github.com/zapatacode?tab=overview&from=2026-01-01&to=2026-01-16" target="_blank" class="social-link"><i class="fab fa-github"></i></a>
                         <a href="https://www.linkedin.com/in/juan-jose-zapata-b776b53a6/" target="_blank" class="social-link"><i class="fab fa-linkedin"></i></a>
@@ -528,15 +526,27 @@
         </div>
     </footer>
 
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    
     <script>
         // ============================================
         // CONFIGURACIÓN - EDITA AQUÍ
         // ============================================
         const CONFIG = {
-            email: 'juanjose.zapata.devl@gmail.com', // ⚠️ EDITA ESTO
+            email: 'juanjose.zapata.dev@gmail.com', // ⚠️ EDITA ESTO
             typingRoles: ['Developer', 'Designer', 'Creator', 'Student'],
-            particleCount: 20
+            particleCount: 20,
+            // ⚠️ CONFIGURACIÓN EMAILJS - EDITA AQUÍ ⚠️
+            EMAILJS: {
+                PUBLIC_KEY: 'pdY1Csm_HmYCdSKy5',      // ← Reemplaza con tu Public Key de EmailJS
+                SERVICE_ID: 'service_s7i8qkl',      // ← Reemplaza con tu Service ID
+                TEMPLATE_ID: 'template_pms42up'     // ← Reemplaza con tu Template ID
+            }
         };
+
+        // Inicializar EmailJS
+        emailjs.init(CONFIG.EMAILJS.PUBLIC_KEY);
 
         // ============================================
         // NAVBAR SCROLL
@@ -647,33 +657,48 @@
         });
 
         // ============================================
-        // FORMULARIO DE CONTACTO
+        // FORMULARIO DE CONTACTO CON EMAILJS
         // ============================================
         const contactForm = document.getElementById('contactForm');
         const formMsg = document.getElementById('formMsg');
+        const submitBtn = contactForm.querySelector('.submit-btn');
         
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            // Deshabilitar botón durante el envío
+            submitBtn.disabled = true;
+            const originalBtnText = submitBtn.querySelector('span').textContent;
+            submitBtn.querySelector('span').textContent = currentLang === 'es' ? 'Enviando...' : 'Sending...';
+            
             const formData = new FormData(contactForm);
-            const data = {
-                nombre: formData.get('nombre'),
-                email: formData.get('email'),
-                mensaje: formData.get('mensaje')
+            
+            // Parámetros para EmailJS
+            const templateParams = {
+                from_name: formData.get('nombre'),
+                from_email: formData.get('email'),
+                message: formData.get('mensaje'),
+                to_email: CONFIG.email
             };
             
-            // Simulación de envío (AQUÍ INTEGRARÍAS EmailJS o tu backend)
             try {
-                // Simular delay
-                await new Promise(resolve => setTimeout(resolve, 1500));
+                // Enviar email usando EmailJS
+                const response = await emailjs.send(
+                    CONFIG.EMAILJS.SERVICE_ID,
+                    CONFIG.EMAILJS.TEMPLATE_ID,
+                    templateParams
+                );
+                
+                console.log('✅ Email enviado:', response.status, response.text);
                 
                 // Mostrar mensaje de éxito
                 formMsg.className = 'form-msg success';
                 formMsg.style.display = 'block';
                 formMsg.textContent = currentLang === 'es' 
-                    ? '¡Mensaje enviado! Te responderé pronto.' 
-                    : 'Message sent! I\'ll respond soon.';
+                    ? '¡Mensaje enviado con éxito! Te responderé pronto.' 
+                    : 'Message sent successfully! I\'ll respond soon.';
                 
+                // Limpiar formulario
                 contactForm.reset();
                 
                 // Ocultar mensaje después de 5 segundos
@@ -681,26 +706,24 @@
                     formMsg.style.display = 'none';
                 }, 5000);
                 
-                // PARA ENVÍO REAL, DESCOMENTAR ESTO Y CONFIGURAR EmailJS:
-                /*
-                emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
-                    from_name: data.nombre,
-                    from_email: data.email,
-                    message: data.mensaje,
-                    to_email: CONFIG.email
-                }).then(() => {
-                    formMsg.className = 'form-msg success';
-                    formMsg.style.display = 'block';
-                    formMsg.textContent = '¡Mensaje enviado!';
-                    contactForm.reset();
-                });
-                */
             } catch (error) {
+                console.error('❌ Error al enviar:', error);
+                
+                // Mostrar mensaje de error
                 formMsg.className = 'form-msg error';
                 formMsg.style.display = 'block';
                 formMsg.textContent = currentLang === 'es' 
-                    ? 'Error al enviar. Intenta de nuevo.' 
-                    : 'Error sending. Please try again.';
+                    ? 'Error al enviar el mensaje. Por favor, intenta de nuevo o contáctame directamente.' 
+                    : 'Error sending message. Please try again or contact me directly.';
+                
+                // Ocultar mensaje después de 5 segundos
+                setTimeout(() => {
+                    formMsg.style.display = 'none';
+                }, 5000);
+            } finally {
+                // Rehabilitar botón
+                submitBtn.disabled = false;
+                submitBtn.querySelector('span').textContent = originalBtnText;
             }
         });
 
@@ -723,5 +746,3 @@
 </body>
 
 </html>
-
-
